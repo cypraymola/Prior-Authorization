@@ -1,0 +1,10 @@
+SYNTHETIC CLINICAL NOTE - FICTIONAL PATIENT - NOT REAL DATA
+Patient ID: P003    Request: MRI lumbar spine without contrast
+
+Chief complaint: Low back pain.
+HPI: Patient has had back pain for approximately 9 weeks, aggravated by lifting.
+No history of trauma. No fever or unexplained weight loss.
+Treatment to date: Has been taking naproxen and using heat packs and a lumbar
+support belt. Activity modification advised.
+Exam: Localized lumbar tenderness, neurologically intact.
+Plan: Request lumbar MRI.

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prior Authorization Assistant</title>
+<style>
+  body{font:16px/1.5 system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#1a1a1a}
+  h1{font-size:1.4rem} label{display:block;margin:1rem 0 .25rem;font-weight:600}
+  input,textarea{width:100%;box-sizing:border-box;padding:.5rem;font:inherit;border:1px solid #bbb;border-radius:6px}
+  textarea{height:200px} button{padding:.55rem 1rem;font:inherit;border:0;border-radius:6px;cursor:pointer;background:#2b5fd9;color:#fff;margin:.75rem .5rem 0 0}
+  button.secondary{background:#e6e6e6;color:#222} button:disabled{opacity:.5;cursor:default}
+  .card{margin-top:1.25rem;padding:1rem;border:1px solid #ccc;border-radius:8px;background:#fafafa}
+  .error{border-color:#c33;background:#fdeeee;color:#7a1a1a} .final{border-color:#2a8a4a;background:#eef8f1}
+  .rec{font-size:1.25rem;font-weight:700} .hint{font-size:.9rem;color:#555}
+</style>
+</head>
+<body>
+<h1>Prior Authorization Assistant <span class="hint">(synthetic data only)</span></h1>
+<label for="pid">Patient ID</label>
+<input id="pid" placeholder="e.g. P001">
+<div class="hint">Load a sample note:
+  <a href="#" data-s="P001">P001</a> · <a href="#" data-s="P002">P002</a> · <a href="#" data-s="P003">P003</a></div>
+<label for="note">Clinical note (plain text)</label>
+<textarea id="note"></textarea>
+<button id="go">Get recommendation</button>
+<div id="out"></div>
+<script>
+const $ = id => document.getElementById(id);
+let thread = null;
+const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const show = (cls, html) => $('out').innerHTML = `<div class="card ${cls}">${html}</div>`;
+
+document.querySelectorAll('[data-s]').forEach(a => a.onclick = async e => {
+  e.preventDefault();
+  const id = a.dataset.s, r = await fetch('/api/sample/' + id);
+  if (r.ok) { $('pid').value = id; $('note').value = (await r.json()).note; }
+});
+
+async function post(url, body) {
+  const r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+  return r.json();
+}
+
+function render(res) {
+  if (res.status === 'error') return show('error', '<b>Error:</b> ' + esc(res.error));
+  if (res.status === 'review') {
+    thread = res.thread_id; const p = res.proposal;
+    show('', `<div class="hint">Proposed recommendation (pending human review)</div>
+      <div class="rec">${esc(p.recommendation)}</div><p>${esc(p.reason)}</p>
+      <b>${esc(p.question)}</b><br>
+      <button id="yes">Yes</button><button id="no" class="secondary">No</button>`);
+    $('yes').onclick = () => decide('yes'); $('no').onclick = () => decide('no');
+  } else {
+    show('final', '<pre style="margin:0;white-space:pre-wrap;font:inherit">' + esc(res.output) + '</pre>');
+  }
+}
+async function decide(answer) { render(await post('/api/decision', {thread_id: thread, answer})); }
+
+$('go').onclick = async () => {
+  $('go').disabled = true; show('', 'Reviewing…');
+  try { render(await post('/api/review', {patient_id: $('pid').value, note: $('note').value})); }
+  catch (e) { show('error', '<b>Error:</b> ' + esc(String(e))); }
+  $('go').disabled = false;
+};
+</script>
+</body>
+</html>

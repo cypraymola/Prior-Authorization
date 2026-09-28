@@ -1,0 +1,10 @@
+SYNTHETIC CLINICAL NOTE - FICTIONAL PATIENT - NOT REAL DATA
+Patient ID: P001    Request: MRI lumbar spine without contrast
+
+Chief complaint: Persistent low back pain.
+HPI: Patient reports low back pain for the past 10 weeks, worse with prolonged
+sitting. No trauma, fever, or weight loss. No bowel or bladder changes.
+Treatment to date: Completed 8 weeks of supervised physiotherapy (twice weekly)
+with limited improvement. Also taking over-the-counter ibuprofen as needed.
+Exam: Mild lumbar paraspinal tenderness. Straight leg raise positive on the right.
+Plan: Request lumbar MRI to evaluate for disc pathology.

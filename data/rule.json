@@ -1,0 +1,13 @@
+{
+  "rule_text": "MRI prior authorization for back pain. Apply the conditions in order and stop at the first that matches: (1) If the patient's plan is inactive, recommend Deny. (2) If the note explicitly says back pain has lasted less than 6 weeks, or physiotherapy was tried for less than 6 weeks, recommend Deny. (3) If the note does not establish the duration of back pain or of physiotherapy, recommend Need more information. (4) Otherwise, recommend Approve. Exactly 6 weeks meets the requirement. 'No physiotherapy was tried' means 0 weeks. Physiotherapy that is not mentioned, or mentioned without a duration, has a duration of null. Other treatments do not count as physiotherapy.",
+  "evaluation_order": [
+    "plan_inactive -> Deny",
+    "pain_weeks < 6 or physio_weeks < 6 -> Deny",
+    "pain_weeks is null or physio_weeks is null -> Need more information",
+    "otherwise -> Approve"
+  ],
+  "thresholds": {
+    "pain_weeks_min": 6,
+    "physio_weeks_min": 6
+  }
+}

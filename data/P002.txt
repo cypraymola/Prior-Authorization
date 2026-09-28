@@ -1,0 +1,10 @@
+SYNTHETIC CLINICAL NOTE - FICTIONAL PATIENT - NOT REAL DATA
+Patient ID: P002    Request: MRI lumbar spine without contrast
+
+Chief complaint: Chronic low back pain.
+HPI: Patient describes low back pain lasting 12 weeks with intermittent
+radiation to the left buttock. No red-flag symptoms reported.
+Treatment to date: Attended 8 weeks of physiotherapy focused on core
+strengthening; pain persists. Uses a heating pad at home.
+Exam: Reduced lumbar flexion, no focal neurological deficit.
+Plan: Request lumbar MRI to guide further management.

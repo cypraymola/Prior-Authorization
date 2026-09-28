@@ -1,0 +1,5 @@
+{
+  "P001": {"name": "Alex Rivera", "plan_active": true},
+  "P002": {"name": "Jordan Blake", "plan_active": false},
+  "P003": {"name": "Morgan Ellis", "plan_active": true}
+}
